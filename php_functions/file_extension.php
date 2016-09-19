@@ -1,58 +1,69 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: webonise
- * Date: 16/9/16
- * Time: 2:14 PM
+include_once('common.php');
+/*
+ * callToMainLogic function takes no parameter
+ * It checks for user option and file extension and calls custom or php inbuilt function accordingly
+ *
  */
+function callToMainLogic()
+{
+    if (isset($_POST['filename'])) {
+        if ($_POST['user_option'] == PHP_BUILT_IN && $_POST['file_ext'] != '') {
+            echo 'Extension :' . getFileExtension($_POST['file_ext']);
+        } else if ($_POST['user_option'] == CUSTOM_FUNCT && $_POST['file_ext'] != '') {
+            echo 'Extension :' . getFileExtensionCustom($_POST['file_ext']);
+        } else {
+            echo 'Please enter and select a valid option';
+        }
 
-
-if(isset($_POST['filename'])) {
-    if($_POST['user_option']==1 && $_POST['file_ext']!= '' ) {
-        echo 'Extension :' . getFileExtension($_POST['file_ext']);
     }
-    else if($_POST['user_option']==2 && $_POST['file_ext']!= '' ) {
-        echo 'Extension :' . getFileExtensionCustom($_POST['file_ext']);
-    }
-    else {
-        echo 'Please enter and select a valid option';
-    }
-
 }
-
+/*
+ * getFileExtension: takes filename as input and returns file extension
+ *
+ */
 function getFileExtension($filename)
 {
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
     return $extension;
 }
+/*
+ * getFileExtensionCustom:takes filename as input and returns file extension
+ *
+ */
 function getFileExtensionCustom($filename) {
-
         $extension="";
+    $container="";
         $len=customStringLength($filename);
-        for($i=0;$i<$len;$i++){
-            if($filename[$i]=='.') {
-                $p=$i;
+        for($counter=$len;$counter>0;$counter--){
+            if($filename[$counter]=='.') {
                 break;
             }
             else {
+                $container .=$filename[$counter];
                 continue;
-            }
+                  }
         }
-        for($j=$p+1;$j<$len;$j++) {
-            $extension .=$filename[$j];
+        $new_length = customStringLength($container);
+        for($j=$new_length;$j>=0;$j--) {
+            $extension .=$container[$j];
         }
 
     return $extension;
 }
-
-function customStringLength($s)
+/*
+ * customStringLength : Finds length of string
+ * Takes string as input and returns numeric value
+ */
+function customStringLength($string)
 {
-    $i = 0;
-    while ($s[$i] != '') {
-        $i++;
+    $counter = 0;
+    while ($string[$counter] != '') {
+        $counter++;
     }
-    return $i;
+    return $counter;
 }
+callToMainLogic();
 ?>
 
 <!DOCTYPE html>

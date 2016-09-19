@@ -1,43 +1,54 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: webonise
- * Date: 16/9/16
- * Time: 3:44 PM
+
+include_once('common.php');
+/*
+ * callToMainLogic : takes no input; contains logic for calling functions after form submit
+ *
  */
-if(isset($_POST['calculate'])) {
-    if ($_POST['user_option'] == 1 && $_POST['date1'] != '' && $_POST['date2'] != '') {
-        echo 'Number of days between '.$_POST['date1'].' and '.$_POST['date2'].' in days :';
-        echo calcDays($_POST['date1'], $_POST['date2']);
+function callToMainLogic()
+{
+    if (isset($_POST['calculate'])) {
+        if ($_POST['user_option'] == PHP_BUILT_IN && $_POST['date1'] != '' && $_POST['date2'] != '') {
+            echo 'Number of days between ' . $_POST['date1'] . ' and ' . $_POST['date2'] . ' in days :';
+            echo calcDays($_POST['date1'], $_POST['date2']);
 
-    }
-    else if ($_POST['user_option'] == 2 && $_POST['date1'] != '' && $_POST['date2'] != '') {
-        echo 'Number of days between '.$_POST['date1'].' and '.$_POST['date2'].' in days :';
-        echo dateDiff($_POST['date1'], $_POST['date2']);
+        } else if ($_POST['user_option'] == CUSTOM_FUNCT && $_POST['date1'] != '' && $_POST['date2'] != '') {
+            echo 'Number of days between ' . $_POST['date1'] . ' and ' . $_POST['date2'] . ' in days :';
+            echo calcDaysCustom($_POST['date1'], $_POST['date2']);
 
-    }
-    else {
-        echo 'Please enter all values and select options properly';
+        } else {
+            echo 'Please enter all values and select options properly';
+        }
     }
 }
+/*
+ * calcDays takes 2 dates as input and returns number of days between using in built functions
+ *
+ */
 function calcDays($date1,$date2) {
-    $fdate=date_create($date1);
-    $sdate=date_create($date2);
-    $diff=date_diff($fdate,$sdate);
+    $first_date=date_create($date1);
+    $second_date=date_create($date2);
+    $diff=date_diff($first_date,$second_date);
     return $diff->format("%R%a days");
 }
 
-function dateDiff($start, $end) {
+/*
+ * calcDaysCustom :takes 2 dates as input and returns the days between using difference in time (seconds)
+ *
+ */
+function calcDaysCustom($date1, $date2) {
 
-    $start_ts = strtotime($start);
+    $start_ts = strtotime($date1);
 
-    $end_ts = strtotime($end);
+    $end_ts = strtotime($date2);
 
     $diff = $end_ts - $start_ts;
 
     return round($diff / 86400).' days';
 
 }
+
+callToMainLogic();
 ?>
 <!DOCTYPE html>
 <html>

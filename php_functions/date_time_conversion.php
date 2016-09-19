@@ -1,30 +1,38 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: webonise
- * Date: 16/9/16
- * Time: 3:04 PM
+/*
+ * Function for  program logic
  */
-if(isset($_POST['uk'])) {
-    echo convertToUk($_POST['dtime']);
+function callToMainLogic()
+{
+    if (isset($_POST['uk'])) {
+        echo convertToUk($_POST['dtime']);
+    }
+    if (isset($_POST['us'])) {
+        echo convertToUS($_POST['dtime']);
+    }
 }
-if(isset($_POST['us'])) {
-    echo convertToUS($_POST['dtime']);
-}
-
-function convertToUS($dtime){
-    $datetime = new DateTime($dtime);
+/*
+ * convertToUS :takes data and time string and converts it into US data and Time
+ *
+ */
+function convertToUS($date_time){
+    $date_time = new DateTime($date_time);
     $la_time = new DateTimeZone('America/New_York');
-    $datetime->setTimezone($la_time);
-    return $datetime->format('Y-m-d H:i:s');
+    $date_time->setTimezone($la_time);
+    return $date_time->format('Y-m-d H:i:s');
 }
-
-function convertToUk($dtime){
-    $datetime = new DateTime($dtime);
+/*
+ * convertToUk :takes data and time string and converts it into UK data and Time
+ *
+ */
+function convertToUk($date_time){
+    $datetime = new DateTime($date_time);
     $la_time = new DateTimeZone('Europe/London');
     $datetime->setTimezone($la_time);
     return $datetime->format('Y-m-d H:i:s');
 }
+
+callToMainLogic();
 ?>
 <!DOCTYPE html>
 <html>
